@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eng2111-exam-rescue-v4';
+const CACHE_NAME = 'eng2111-exam-rescue-v5';
 const APP_SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './asset-manifest.json'];
 
 self.addEventListener('install', event => {
@@ -21,6 +21,19 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        }
+        return response;
+      }).catch(async () => (await caches.match(event.request)) || (await caches.match('./index.html')) || (await caches.match('./')))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       if (response.ok) {
@@ -28,6 +41,6 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
       }
       return response;
-    }).catch(() => event.request.mode === 'navigate' ? caches.match('./index.html') : undefined))
+    }))
   );
 });
