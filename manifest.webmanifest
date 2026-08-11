@@ -1,0 +1,19 @@
+{
+  "name": "ENG2111 Exam Rescue",
+  "short_name": "ENG2111",
+  "description": "Offline-ready Separation Processes 1 revision and model answers.",
+  "id": "./",
+  "start_url": "./#/today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf1f4",
+  "theme_color": "#0b1f33",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
